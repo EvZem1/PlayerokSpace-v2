@@ -14,7 +14,7 @@ export interface Department {
   title: string;
   description: string;
   icon: LucideIcon;
-  articleCount: number;
+  // articleCount removed, calculated dynamically
   color: string; // Tailwind gradient or color class
   isVip?: boolean; // For "Volturi" theme
   colSpan?: string; // For Bento Grid layout (e.g., col-span-2)
@@ -25,7 +25,7 @@ export interface Article {
   departmentId: string;
   title: string;
   excerpt: string;
-  content: string;
+  content: string; // HTML/Rich text string
   author: string;
   date: string;
   isFavorite: boolean;

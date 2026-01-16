@@ -1,15 +1,15 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { departments } from '../data/mockData';
-import { Department } from '../types';
+import { useAppContext } from '../context/AppContext';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { departments, articles } = useAppContext();
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -19,7 +19,7 @@ export const Dashboard: React.FC = () => {
     }
   };
 
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50 } }
   };
@@ -44,10 +44,11 @@ export const Dashboard: React.FC = () => {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[200px]"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[220px]"
       >
-        {departments.map((dept: Department) => {
+        {departments.map((dept) => {
           const isVip = dept.isVip;
+          const articleCount = articles.filter(a => a.departmentId === dept.id).length;
 
           return (
             <motion.div
@@ -79,12 +80,13 @@ export const Dashboard: React.FC = () => {
               <div className="relative h-full flex flex-col justify-between z-10">
                 <div className="flex justify-between items-start">
                   <div className={clsx(
-                    "p-3 rounded-2xl transition-all duration-300 group-hover:scale-110",
+                    "flex items-center justify-center rounded-2xl transition-all duration-300 group-hover:scale-110",
+                    "w-14 h-14", // Fixed uniform size
                     isVip 
                       ? "bg-gradient-to-br from-amber-300 to-amber-600 text-black shadow-lg shadow-amber-500/20" 
                       : `bg-gradient-to-br ${dept.color} text-white shadow-md`
                   )}>
-                    <dept.icon className="w-6 h-6" />
+                    <dept.icon className="w-7 h-7" />
                   </div>
                   
                   <div className={clsx(
@@ -120,7 +122,7 @@ export const Dashboard: React.FC = () => {
                   "text-xs font-medium px-3 py-1 rounded-full w-fit mt-2",
                   isVip ? "bg-amber-900/30 text-amber-300 border border-amber-500/20" : "bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400"
                 )}>
-                  {dept.articleCount} материалов
+                  {articleCount} материалов
                 </div>
               </div>
             </motion.div>
